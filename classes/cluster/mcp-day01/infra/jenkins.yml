@@ -1,0 +1,133 @@
+classes:
+- system.jenkins.master.config
+- system.jenkins.master.single
+- system.jenkins.client.job.deploy.openstack
+- system.jenkins.client
+- system.jenkins.client.credential.salt
+- system.jenkins.client.user.admin
+parameters:
+  _param:
+    jenkins_client_user: admin
+    jenkins_client_password: r00tme
+    jenkins_admin_password: r00tme
+    jenkins_master_host: ${_param:infra_config_deploy_address}
+    jenkins_git_url: 'git@cfg01:/home/repo'
+    jenkins_gerrit_url: ${_param:jenkins_git_url}
+    jenkins_admin_token: AQAAABAAAABwpVdkS7iy4UHuvcbhzVNsGi85cXPhSBCrt/qKkTCNHRXuIlITVCdX9xoTHb5lllS8PAbQlo8ELG/2T3Y+aZkkzKgQrNSqvvbNie8XOMJmsAEN3xbbU7r8iYCZ3jR+VNEgw3BVcPXKyU0rPKm7uYLuHifQ+uRZFCd5v66Mo5q902Y=
+    git_private_key: |
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEpAIBAAKCAQEA6eooyu4/EBwHKMSDFqWych5qMEattpOI2cSY8dc3dG1QX2BQ
+      lP+WzCT42vopVZ+Mh3Iwr+Gyu1pM6yg9dNhWAEoU9BrE7cOnNQc0MqZ6OGP4rPUc
+      1g7W2pD+1Qtfka8GF60GiHQaEu9QEDN1gmg68uBUFG4CDTCXKQbBYM0HAb6ozUQh
+      aqFd2pT28R7j4oT7zylYxyPs9FZQgq2sMkzbAz+99YazUpGk0lUU4sBOhLZOAsC+
+      4lfazBUnSha43QaSNEWurxlU9d9sBoNCxdjSveUM1nzI838QbdF1kmq60yqH31Gw
+      QnX21pOTYC+I3x6/R0rn4/mdEMkTK6kWAbNJdQIDAQABAoIBAEoW5vDP4Z2iowng
+      pHzJ4umOhKfh2yfXNyNyx9biCiiQb0KmaR+ojQUAOOpzDiCWtpY4Lv+mh0wcX/yj
+      9ENMOoFA9b4TtIhyzkVXkMryPAgccimmQYnzjU4RWwXz4kNsoothPI5/57pTnpJj
+      GjdB+Fnxf/Awn+m5mEdgYmPczPlZ5VWZZL7pEAeiDADGDP++4Iu1vtr9SztZP3BC
+      aJGGQjQ/aLTH3rtAmhuFmMRV5qWes4MOmja+fi+husFJql24rAfHt9mvVcG5QUnz
+      4hPzsAb+BKdByienJLzkqQq3zwueN4AxypScTl6SHYo3Z7HwYKZGlhLSbg0shxYG
+      lvPbO4kCgYEA/TYUYuemcJsIEcE4KKyEQKBPk0HsaOz4FkTZDy4JaFIk8bBBCxJb
+      0r2XimwE0UaMWx+OLKGcMxwO8ol8ft6ywvwV41JX0Ir+wr2NwRcLHZybczKd1KnL
+      VtMENE0vR6CEVlM+XeijZkyvJcfjy1DtbwQlqy3Xtie3ahP2nHNNpaMCgYEA7H2s
+      eMeG8H7XHge+5lpWEbOFaN5t02S4S4mz2Qcjm81s0pUhgQtDJdFb1qfIgBXR1Kz1
+      FwicatyYZFGnOrdgo27lrheUgpqXnXrqjgrIbfAaw+zZiQBOnhpBFV/C8FTYIHL5
+      nGpcpyVTix1zmbmaO2Mx6ScxAs/Hr7h+WGBFVgcCgYEAm+bTMH5OdSCPHFdqG2j0
+      2NGbjSBWzdexfAyR1I3Uzv1cr86EjauVC7Ed/+U4Jh4YxvYr1IEAqltJPL24AGlf
+      iTwqwdbuKIGcEA0jnVJxzp6g+5GbqdeNUf0EpqsrRB+pu3jvemSFTrRCVrG3KHTA
+      a80S4E2OdiIIBPEbswIvOZ8CgYEA2qwOKZQdcw1l7g+tdiR7x1xe9KwPk1Njkf1f
+      PkN6qpsVj9Zzp3X5feOLbv2vyLfkUSooakb9E1as1r4lyoY7poNpf0Owf99gaC56
+      6iKQWA+XQCkmsKaHC2wtWA03HLDnM4H8yqQSzj8Wc+EkvjU/psA/K16g0/+6ngIT
+      WbaTBksCgYBwqik2xtpU/T04kvp4Nxn1B5zF6DNtHb/0bT3BtH4K0Uyb0CMtj6dH
+      apPxcd8cUZ/QIC7alF51jY2DV1q59UxYNs816KoEXCzvCChpZlxq/ugtybyh62xw
+      CZITVJhb06RGOO0TrQybNQ+K8H4J8flt6CZ47vDjyLD3vp+BjmLz6Q==
+      -----END RSA PRIVATE KEY-----
+  linux:
+    system:
+      directory:
+        /home/repo/mcp-ci/pipeline-library:
+          user: git
+          group: www-data
+          mode: 755
+          makedirs: true
+        /home/repo/mk/mk-pipelines:
+          user: git
+          group: www-data
+          mode: 755
+          makedirs: true
+      repo:
+        jenkins-ppa:
+          source: "deb http://pkg.jenkins.io/debian-stable binary/"
+          architectures: amd64
+          key_id: D50582E6
+          key_server: https://pkg.jenkins.io/debian/jenkins-ci.org.key
+      package:
+        jenkins:
+          version: latest
+        virtualenv:
+          version: latest
+      config:
+        jenkins_master:
+          pillar:
+            jenkins:
+              master:
+                home: /var/lib/jenkins
+      user:
+        git:
+          enabled: true
+          name: git
+          sudo: false
+          full_name: git
+          home: /home/git
+        jenkins:
+          enabled: true
+          name: jenkins
+          sudo: false
+          full_name: jenkins
+          home: /var/lib/jenkins
+  openssh:
+    server:
+      enabled: true
+      user:
+        git:
+          enabled: true
+          public_keys:
+            - key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDp6ijK7j8QHAcoxIMWpbJyHmowRq22k4jZxJjx1zd0bVBfYFCU/5bMJPja+ilVn4yHcjCv4bK7WkzrKD102FYAShT0GsTtw6c1BzQypno4Y/is9RzWDtbakP7VC1+RrwYXrQaIdBoS71AQM3WCaDry4FQUbgINMJcpBsFgzQcBvqjNRCFqoV3alPbxHuPihPvPKVjHI+z0VlCCrawyTNsDP731hrNSkaTSVRTiwE6Etk4CwL7iV9rMFSdKFrjdBpI0Ra6vGVT132wGg0LF2NK95QzWfMjzfxBt0XWSarrTKoffUbBCdfbWk5NgL4jfHr9HSufj+Z0QyRMrqRYBs0l1
+          user: ${linux:system:user:git}
+    client:
+      enabled: true
+      user:
+        jenkins:
+          enabled: true
+          private_key:
+            type: rsa
+            key: ${_param:git_private_key}
+          user: ${linux:system:user:jenkins}
+          config:
+            cfg01:
+              identityfile: '/var/lib/jenkins/.ssh/id_rsa'
+  jenkins:
+    master:
+      http:
+        port: 8081
+    client:
+      theme:
+        css_url: '/userContent/theme/mirantis.css'
+        js_url: '/userContent/theme/mirantis.js'
+      node:
+        master:
+          node_mode: Normal
+          remote_home: /var/lib/jenkins
+          num_executors: 4
+          launcher:
+            type: master
+          labels:
+            - python
+            - test
+      lib:
+        pipeline-library:
+          credential_id: git
+  git:
+    server:
+      enabled: true
+      directory: /home/repo

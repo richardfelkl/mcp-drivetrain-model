@@ -1,0 +1,36 @@
+classes:
+- system.maas.region.single
+- system.linux.system.repo.mcp.apt_mirantis.maas
+parameters:
+  _param:
+    maas_admin_password: r00tme
+    maas_db_password: fRqC7NJrBR0x
+    maas_region_port: 5240
+    maas_cluster_region_port: ${_param:maas_region_port}
+  maas:
+    region:
+      bind:
+        host: ${_param:deploy_address}:${_param:maas_region_port}
+    cluster:
+      region:
+        host: ${_param:deploy_address}:${_param:maas_cluster_region_port}
+  postgresql:
+    server:
+      enabled: true
+      version: 9.5
+      bind:
+        address: 127.0.0.1
+        port: 5432
+        protocol: tcp
+      clients:
+      - 127.0.0.1
+      database:
+        maasdb:
+          encoding: 'UTF8'
+          #locale: 'cs_CZ'
+          users:
+            - name: 'maas'
+              password: ${_param:maas_db_password}
+              host: 'localhost'
+              createdb: true
+              rights: 'all privileges'
